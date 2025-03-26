@@ -40,7 +40,8 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(), loginDto.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "User logged in successfully!";
+
+        return "User has logged in successfully!";
     }
 
     @Override
@@ -64,11 +65,7 @@ public class AuthServiceImpl implements AuthService {
 
         // assign role to user
         Set<Role> roles = new HashSet<>();
-        Optional<Role> roleOptional = roleRepository.findByName("ADMIN");
-        if (roleOptional.isEmpty()) {
-            throw new RuntimeException("Role ADMIN not found!"); // Handle properly
-        }
-        Role role = roleOptional.get();
+        Role role = roleRepository.findByName("ADMIN").get();
         roles.add(role);
         user.setRoles(roles);
 
