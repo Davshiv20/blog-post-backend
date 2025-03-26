@@ -64,7 +64,11 @@ public class AuthServiceImpl implements AuthService {
 
         // assign role to user
         Set<Role> roles = new HashSet<>();
-        Role role = roleRepository.findByName("ADMIN").get();
+        Optional<Role> roleOptional = roleRepository.findByName("ADMIN");
+        if (roleOptional.isEmpty()) {
+            throw new RuntimeException("Role ADMIN not found!"); // Handle properly
+        }
+        Role role = roleOptional.get();
         roles.add(role);
         user.setRoles(roles);
 
